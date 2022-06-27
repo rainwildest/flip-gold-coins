@@ -18,6 +18,8 @@ set(PROJECT_SOURCES
         main.cpp
         mainscene.cpp
         mainscene.h
+        mypushbutton.cpp
+        mypushbutton.h
         mainscene.ui
         resource.qrc
 )
