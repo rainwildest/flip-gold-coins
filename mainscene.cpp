@@ -2,6 +2,7 @@
 #include "./ui_mainscene.h"
 #include <QPainter>
 #include "mypushbutton.h"
+#include <QDebug>
 
 MainScene::MainScene(QWidget *parent)
     : QMainWindow(parent)
@@ -29,6 +30,12 @@ MainScene::MainScene(QWidget *parent)
     startBtn->setParent(this);
     startBtn->move(this->width() * 0.5 - startBtn->width() * 0.5, this->height() * 0.7);
 
+    connect(startBtn, &MyPushButton::clicked, [=](){
+        qDebug() << "点击开始了";
+
+        startBtn->zoomDown();
+        startBtn->zoomUp();
+    });
 }
 
 void MainScene::paintEvent(QPaintEvent *) {
