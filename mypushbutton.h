@@ -16,6 +16,10 @@ public:
     // 弹跳效果
     void zoomDown(); // 向下跳
     void zoomUp(); // 向上跳
+
+    // 重写按钮 按下 和释放事件
+    void mousePressEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
 signals:
 
 };

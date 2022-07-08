@@ -3,6 +3,7 @@
 #include <QPainter>
 #include "mypushbutton.h"
 #include <QDebug>
+#include <QTimer>
 
 MainScene::MainScene(QWidget *parent)
     : QMainWindow(parent)
@@ -30,11 +31,30 @@ MainScene::MainScene(QWidget *parent)
     startBtn->setParent(this);
     startBtn->move(this->width() * 0.5 - startBtn->width() * 0.5, this->height() * 0.7);
 
+    // 实例化选择关卡场景
+    chooseScene = new ChooseLevelSence;
+
+    // 监听选择关卡的返回按钮的信号
+    connect(chooseScene, &ChooseLevelSence::chooseSceneBack, this, [=]() {
+        // 将选择关卡场景 隐藏掉
+        chooseScene->hide();
+        // 重新显示主场景
+        this->show();
+    });
+
     connect(startBtn, &MyPushButton::clicked, [=](){
         qDebug() << "点击开始了";
 
         startBtn->zoomDown();
         startBtn->zoomUp();
+
+        //延时进入到选择关卡场景中
+        QTimer::singleShot(500, this, [=](){
+            // 进入选择关卡场景中
+            chooseScene->show();
+            // 自身隐藏
+            this->hide();
+        });
     });
 }
 

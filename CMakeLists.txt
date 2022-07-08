@@ -20,6 +20,8 @@ set(PROJECT_SOURCES
         mainscene.h
         mypushbutton.cpp
         mypushbutton.h
+        chooselevelsence.cpp
+        chooselevelsence.h
         mainscene.ui
         resource.qrc
 )
