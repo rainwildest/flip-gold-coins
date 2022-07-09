@@ -58,6 +58,21 @@ ChooseLevelSence::ChooseLevelSence(QWidget *parent)
         connect(menuBtn, &MyPushButton::clicked, [=]() {
             QString str = QString("您选择的是第%1关 ").arg(i + 1);
             qDebug() << str;
+
+            // 将选关场景隐藏
+            this->hide();
+
+            // 进入到游戏场景
+            playScene = new PlayScene(i + 1);
+            playScene->show();
+
+
+            connect(playScene, &PlayScene::chooseSceneBack, [=]() {
+                this->show();
+
+                delete playScene;
+                playScene = nullptr;
+            });
         });
 
         QLabel * label = new QLabel;
