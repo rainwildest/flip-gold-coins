@@ -24,6 +24,8 @@ set(PROJECT_SOURCES
         chooselevelsence.h
         playscene.cpp
         playscene.h
+        mycoin.h
+        mycoin.cpp
         mainscene.ui
         resource.qrc
 )
