@@ -49,7 +49,7 @@ MainScene::MainScene(QWidget *parent)
         startBtn->zoomUp();
 
         //延时进入到选择关卡场景中
-        QTimer::singleShot(500, this, [=](){
+        QTimer::singleShot(300, this, [=](){
             // 进入选择关卡场景中
             chooseScene->show();
             // 自身隐藏

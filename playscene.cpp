@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <QDebug>
 #include <QTimer>
+#include <QLabel>
 #include "mypushbutton.h"
 
 //PlayScene::PlayScene(QWidget *parent)
@@ -53,6 +54,21 @@ PlayScene::PlayScene(int level) {
             emit this->chooseSceneBack();
         });
     });
+
+    // 显示当前关卡数
+    QLabel * label = new QLabel();
+    label->setParent(this);
+
+    QString levelStr = QString("Level: %1").arg(this->levelIndex);
+
+    // 设置字体
+    QFont font;
+    font.setFamily("华文新魏");
+    font.setPointSize(20);
+
+    label->setFont(font);
+    label->setText(levelStr);
+    label->setGeometry(10, this->height() - 45, 120, 50);
 }
 
 
