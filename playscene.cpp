@@ -95,7 +95,7 @@ PlayScene::PlayScene(int level) {
             label->move(60+ i * 50, 200 + j * 50);
 
             QString coinImage;
-            if(this->gameArray[i][j]==1) {
+            if(this->gameArray[i][j] == 1) {
                 coinImage = ":/resource/Coin0001.png";
             } else {
                 coinImage = ":/resource/Coin0008.png";
@@ -105,6 +105,16 @@ PlayScene::PlayScene(int level) {
             MyCoin * coin = new MyCoin(coinImage);
             coin->setParent(this);
             coin->move(62 + i * 50, 203 + j * 50);
+
+            // 给金币的属性赋值
+            coin->posX = i;
+            coin->posY = j;
+            coin->flag = this->gameArray[i][j]; // 0 反面 1 正面
+
+            // 点击金币 进行翻转
+            connect(coin, &MyCoin::clicked, [=]() {
+                coin->changeFlag();
+            });
         }
     }
 
