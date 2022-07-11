@@ -16,6 +16,9 @@ public:
 
     // 重写绘图事件
     void paintEvent(QPaintEvent *);
+
+    // 二维数组 维护每个关卡的具体数据
+    int gameArray[4][4];
 signals:
     void chooseSceneBack();
 };

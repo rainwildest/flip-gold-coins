@@ -6,6 +6,7 @@
 #include <QLabel>
 #include "mypushbutton.h"
 #include "mycoin.h"
+#include "dataconfig.h"
 
 //PlayScene::PlayScene(QWidget *parent)
 //    : QMainWindow{parent}
@@ -71,32 +72,55 @@ PlayScene::PlayScene(int level) {
     label->setText(levelStr);
     label->setGeometry(10, this->height() - 45, 120, 50);
 
-    // 显示金币背景图案
-//    for(int i = 0; i < 4; ++i) {
-//        for(int j = 0; j < 4; ++j) {
-//            // 绘制背景图片
-//            QPixmap pix = QPixmap(":/resource/BoardNode.png");
-//            QLabel * label = new QLabel;
-//            label->setGeometry(0,0, pix.width(), pix.height());
-//            label->setPixmap(pix);
-//            label->setParent(this);
-//            label->move(57+ i * 50, 200 + j * 50);
-//        }
-//    }
 
-    for(int i = 0; i < 16; i++) {
-        QPixmap pix = QPixmap(":/resource/BoardNode.png");
-        QLabel * label = new QLabel;
-        label->setGeometry(0,0, pix.width(), pix.height());
-        label->setPixmap(pix);
-        label->setParent(this);
-        label->move(60 + i % 4 * 50, 200 + i/4 * 50);
 
-        // 创建金币
-        MyCoin * coin = new MyCoin(":/resource/Coin0001.png");
-        coin->setParent(this);
-        coin->move(62 + i % 4 * 50, 203 + i/4 * 50);
+    dataConfig config;
+    // 初始化每个关卡的二维数组
+    for(int i = 0; i < 4; ++i) {
+        for(int j = 0; j < 4; ++j) {
+            this->gameArray[i][j] = config.mData[this->levelIndex][i][j];
+        }
     }
+
+    // 显示金币背景图案
+    for(int i = 0; i < 4; ++i) {
+        for(int j = 0; j < 4; ++j) {
+            // 绘制背景图片
+            QPixmap pix = QPixmap(":/resource/BoardNode.png");
+            QLabel * label = new QLabel;
+
+            label->setGeometry(0,0, pix.width(), pix.height());
+            label->setPixmap(pix);
+            label->setParent(this);
+            label->move(60+ i * 50, 200 + j * 50);
+
+            QString coinImage;
+            if(this->gameArray[i][j]==1) {
+                coinImage = ":/resource/Coin0001.png";
+            } else {
+                coinImage = ":/resource/Coin0008.png";
+            }
+
+            // 创建金币
+            MyCoin * coin = new MyCoin(coinImage);
+            coin->setParent(this);
+            coin->move(62 + i * 50, 203 + j * 50);
+        }
+    }
+
+//    for(int i = 0; i < 16; i++) {
+//        QPixmap pix = QPixmap(":/resource/BoardNode.png");
+//        QLabel * label = new QLabel;
+//        label->setGeometry(0,0, pix.width(), pix.height());
+//        label->setPixmap(pix);
+//        label->setParent(this);
+//        label->move(60 + i % 4 * 50, 200 + i/4 * 50);
+
+//        // 创建金币
+//        MyCoin * coin = new MyCoin(":/resource/Coin0001.png");
+//        coin->setParent(this);
+//        coin->move(62 + i % 4 * 50, 203 + i/4 * 50);
+//    }
 }
 
 

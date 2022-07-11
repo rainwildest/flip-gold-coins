@@ -26,6 +26,8 @@ set(PROJECT_SOURCES
         playscene.h
         mycoin.h
         mycoin.cpp
+        dataconfig.h
+        dataconfig.cpp
         mainscene.ui
         resource.qrc
 )
