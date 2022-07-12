@@ -32,6 +32,9 @@ public:
 
     // 重写 按下
     void mousePressEvent(QMouseEvent *);
+
+    // 是否胜利的标志
+    bool isWin;
 signals:
 
 };

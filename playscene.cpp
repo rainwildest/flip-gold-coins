@@ -131,7 +131,7 @@ PlayScene::PlayScene(int level) {
                         coinBtn[coin->posX - 1][coin->posY]->changeFlag();
                         this->gameArray[coin->posX - 1][coin->posY] = this->gameArray[coin->posX - 1][coin->posY] == 0 ? 1 : 0;
                     }
-                    qDebug() << "orignal:" << coin->posY << " new:" << coin->posY + 1;
+
                     if(coin->posY + 1 <= 3){
                         // 周围的上侧金币翻转的条件
                         coinBtn[coin->posX][coin->posY + 1]->changeFlag();
@@ -143,24 +143,31 @@ PlayScene::PlayScene(int level) {
                         coinBtn[coin->posX][coin->posY - 1]->changeFlag();
                         this->gameArray[coin->posX][coin->posY - 1] = this->gameArray[coin->posX][coin->posY - 1] == 0 ? 1 : 0;
                     }
+
+                    // 判断是否胜利
+                    this->isWin = true;
+                    for(int i = 0; i < 4; ++i) {
+                        for(int j = 0; j < 4; ++j) {
+                            if(coinBtn[i][j]->flag == false) {
+                                // 只要有一个是反面 就算失败
+                                this->isWin = false;
+                                break;
+                            }
+                        }
+                    }
+                    if(this->isWin == true) {
+                        qDebug() << "胜利了";
+                        // 将所有按钮的胜利标志改为 true
+                        for(int i = 0; i < 4; ++i) {
+                            for(int j = 0; j < 4; ++j) {
+                                coinBtn[i][j]->isWin = true;
+                            }
+                        }
+                    }
                 });
             });
         }
     }
-
-//    for(int i = 0; i < 16; i++) {
-//        QPixmap pix = QPixmap(":/resource/BoardNode.png");
-//        QLabel * label = new QLabel;
-//        label->setGeometry(0,0, pix.width(), pix.height());
-//        label->setPixmap(pix);
-//        label->setParent(this);
-//        label->move(60 + i % 4 * 50, 200 + i/4 * 50);
-
-//        // 创建金币
-//        MyCoin * coin = new MyCoin(":/resource/Coin0001.png");
-//        coin->setParent(this);
-//        coin->move(62 + i % 4 * 50, 203 + i/4 * 50);
-//    }
 }
 
 
