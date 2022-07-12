@@ -39,6 +39,7 @@ MyCoin::MyCoin(QString btnImg) {
         if(this->min > this->max) {
             this->min = 1;
             timer1->stop();
+            this->isAnimetion = false;
         }
     });
 
@@ -57,8 +58,15 @@ MyCoin::MyCoin(QString btnImg) {
         if(this->max < this->min) {
             this->max = 8;
             timer2->stop();
+            this->isAnimetion = false;
         }
     });
+}
+
+void MyCoin::mousePressEvent(QMouseEvent *e) {
+    if(this->isAnimetion) return;
+
+    return QPushButton::mousePressEvent(e);
 }
 
 // 改变正反面标志的方法
@@ -67,9 +75,11 @@ void MyCoin::changeFlag(){
         // 正面翻反面
         timer1->start(this->millisecond);
         this->flag = false;
+        this->isAnimetion = true;
     } else {
         // 反面翻正面
         timer2->start(this->millisecond);
         this->flag = true;
+        this->isAnimetion = true;
     }
 }

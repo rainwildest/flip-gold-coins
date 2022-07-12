@@ -111,9 +111,15 @@ PlayScene::PlayScene(int level) {
             coin->posY = j;
             coin->flag = this->gameArray[i][j]; // 0 反面 1 正面
 
+            coinBtn[i][j] = coin;
+
             // 点击金币 进行翻转
             connect(coin, &MyCoin::clicked, [=]() {
                 coin->changeFlag();
+                this->gameArray[i][j] = this->gameArray[j][j] == 0 ? 1 : 0;
+
+                // 翻转周围硬币
+
             });
         }
     }

@@ -26,6 +26,12 @@ public:
     int max = 8;
 
     int millisecond = 40;
+
+    // 执行动画 标志
+    bool isAnimetion = false;
+
+    // 重写 按下
+    void mousePressEvent(QMouseEvent *);
 signals:
 
 };
