@@ -118,8 +118,32 @@ PlayScene::PlayScene(int level) {
                 coin->changeFlag();
                 this->gameArray[i][j] = this->gameArray[j][j] == 0 ? 1 : 0;
 
-                // 翻转周围硬币
+                QTimer::singleShot(300, this, [=]() {
+                    // 翻转周围硬币
+                    if(coin->posX + 1 <= 3) {
+                        // 周围的右侧金币翻转的条件
+                        coinBtn[coin->posX + 1][coin->posY]->changeFlag();
+                        this->gameArray[coin->posX + 1][coin->posY] = this->gameArray[coin->posX + 1][coin->posY] == 0 ? 1 : 0;
+                    }
 
+                    if(coin->posX - 1 >= 0) {
+                        // 周围的左侧金币翻转的条件
+                        coinBtn[coin->posX - 1][coin->posY]->changeFlag();
+                        this->gameArray[coin->posX - 1][coin->posY] = this->gameArray[coin->posX - 1][coin->posY] == 0 ? 1 : 0;
+                    }
+                    qDebug() << "orignal:" << coin->posY << " new:" << coin->posY + 1;
+                    if(coin->posY + 1 <= 3){
+                        // 周围的上侧金币翻转的条件
+                        coinBtn[coin->posX][coin->posY + 1]->changeFlag();
+                        this->gameArray[coin->posX][coin->posY + 1] = this->gameArray[coin->posX][coin->posY + 1] == 0 ? 1 : 0;
+                    }
+
+                    if(coin->posY - 1 >= 0){
+                        // 周围的下侧金币翻转的条件
+                        coinBtn[coin->posX][coin->posY - 1]->changeFlag();
+                        this->gameArray[coin->posX][coin->posY - 1] = this->gameArray[coin->posX][coin->posY - 1] == 0 ? 1 : 0;
+                    }
+                });
             });
         }
     }
