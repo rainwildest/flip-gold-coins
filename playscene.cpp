@@ -65,7 +65,6 @@ PlayScene::PlayScene(int level) {
     // 点击返回
     connect(backBtn, &MyPushButton::clicked, [=]() {
 //        qDebug() << "翻金币的场景中，点击了返回按钮";
-
         backSound->play();
 
         QTimer::singleShot(300, this, [=]() {

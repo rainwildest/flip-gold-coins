@@ -51,6 +51,7 @@ ChooseLevelSence::ChooseLevelSence(QWidget *parent)
     // 点击返回
     connect(backBtn, &MyPushButton::clicked, [=]() {
 //        qDebug() << "点击了返回按钮";
+//        this->setGeometry(playScene->geometry());
         backSound->play();
 
         QTimer::singleShot(500, this, [=]() {
@@ -78,10 +79,13 @@ ChooseLevelSence::ChooseLevelSence(QWidget *parent)
 
             // 进入到游戏场景
             playScene = new PlayScene(i + 1);
+
+            // 设置游戏场景的初始位置
+            playScene->setGeometry(this->geometry());
             playScene->show();
 
-
             connect(playScene, &PlayScene::chooseSceneBack, [=]() {
+                this->setGeometry(playScene->geometry());
                 this->show();
 
                 delete playScene;
