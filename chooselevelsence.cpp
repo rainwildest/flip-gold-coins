@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <QLabel>
+#include <QSoundEffect>
 #include "mypushbutton.h"
 
 ChooseLevelSence::ChooseLevelSence(QWidget *parent)
@@ -33,6 +34,15 @@ ChooseLevelSence::ChooseLevelSence(QWidget *parent)
         this->close();
     });
 
+    // 准备开始按钮的音效
+    QSoundEffect * startSound = new QSoundEffect(this);
+    startSound->setSource(QUrl::fromLocalFile(":/resource/TapButtonSound.wav"));
+
+    // 返回按钮音效
+    QSoundEffect * backSound = new QSoundEffect(this);
+    backSound->setSource(QUrl::fromLocalFile(":/resource/BackButtonSound.wav"));
+
+
     // 返回按钮
     MyPushButton * backBtn = new MyPushButton(":/resource/BackButton.png", ":resource/BackButtonSelected.png");
     backBtn->setParent(this);
@@ -40,7 +50,8 @@ ChooseLevelSence::ChooseLevelSence(QWidget *parent)
 
     // 点击返回
     connect(backBtn, &MyPushButton::clicked, [=]() {
-        qDebug() << "点击了返回按钮";
+//        qDebug() << "点击了返回按钮";
+        backSound->play();
 
         QTimer::singleShot(500, this, [=]() {
             emit this->chooseSceneBack();
@@ -56,8 +67,11 @@ ChooseLevelSence::ChooseLevelSence(QWidget *parent)
 
         // 监听每个按钮的点击事件
         connect(menuBtn, &MyPushButton::clicked, [=]() {
-            QString str = QString("您选择的是第%1关 ").arg(i + 1);
-            qDebug() << str;
+            // 播放选择关卡音效
+            startSound->play();
+
+//            QString str = QString("您选择的是第%1关 ").arg(i + 1);
+//            qDebug() << str;
 
             // 将选关场景隐藏
             this->hide();

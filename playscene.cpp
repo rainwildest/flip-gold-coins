@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QLabel>
 #include <QPropertyAnimation>
+#include <QSoundEffect>
 #include "mypushbutton.h"
 #include "mycoin.h"
 #include "dataconfig.h"
@@ -44,6 +45,18 @@ PlayScene::PlayScene(int level) {
         this->close();
     });
 
+    // 返回按钮音效
+    QSoundEffect * backSound = new QSoundEffect(this);
+    backSound->setSource(QUrl::fromLocalFile(":/resource/BackButtonSound.wav"));
+
+    // 翻金币音效
+    QSoundEffect * flipSound = new QSoundEffect(this);
+    flipSound->setSource(QUrl::fromLocalFile(":/resource/ConFlipSound.wav"));
+
+    // 胜利音效
+    QSoundEffect * winSound = new QSoundEffect(this);
+    winSound->setSource(QUrl::fromLocalFile(":/resource/LevelWinSound.wav"));
+
     // 返回按钮
     MyPushButton * backBtn = new MyPushButton(":/resource/BackButton.png", ":resource/BackButtonSelected.png");
     backBtn->setParent(this);
@@ -51,7 +64,9 @@ PlayScene::PlayScene(int level) {
 
     // 点击返回
     connect(backBtn, &MyPushButton::clicked, [=]() {
-        qDebug() << "翻金币的场景中，点击了返回按钮";
+//        qDebug() << "翻金币的场景中，点击了返回按钮";
+
+        backSound->play();
 
         QTimer::singleShot(300, this, [=]() {
             emit this->chooseSceneBack();
@@ -121,10 +136,19 @@ PlayScene::PlayScene(int level) {
             coin->posY = j;
             coin->flag = this->gameArray[i][j]; // 0 反面 1 正面
 
+            // 将金币放到 金币的二维数组 以便后期的维护
             coinBtn[i][j] = coin;
 
             // 点击金币 进行翻转
             connect(coin, &MyCoin::clicked, [=]() {
+                flipSound->play();
+
+                for(int i = 0; i < 4; ++i) {
+                    for(int j = 0; j < 4; ++j) {
+                        this->coinBtn[i][j]->isWin = true;
+                    }
+                }
+
                 coin->changeFlag();
                 this->gameArray[i][j] = this->gameArray[j][j] == 0 ? 1 : 0;
 
@@ -143,15 +167,21 @@ PlayScene::PlayScene(int level) {
                     }
 
                     if(coin->posY + 1 <= 3){
-                        // 周围的上侧金币翻转的条件
+                        // 周围的下侧金币翻转的条件
                         coinBtn[coin->posX][coin->posY + 1]->changeFlag();
                         this->gameArray[coin->posX][coin->posY + 1] = this->gameArray[coin->posX][coin->posY + 1] == 0 ? 1 : 0;
                     }
 
                     if(coin->posY - 1 >= 0){
-                        // 周围的下侧金币翻转的条件
+                        // 周围的上侧金币翻转的条件
                         coinBtn[coin->posX][coin->posY - 1]->changeFlag();
                         this->gameArray[coin->posX][coin->posY - 1] = this->gameArray[coin->posX][coin->posY - 1] == 0 ? 1 : 0;
+                    }
+
+                    for(int i = 0; i < 4; ++i) {
+                        for(int j = 0; j < 4; ++j) {
+                            this->coinBtn[i][j]->isWin = false;
+                        }
                     }
 
                     // 判断是否胜利
@@ -165,8 +195,13 @@ PlayScene::PlayScene(int level) {
                             }
                         }
                     }
+
                     if(this->isWin == true) {
                         qDebug() << "胜利了";
+                        QTimer::singleShot(800, this, [=]() {
+                            winSound->play();
+                        });
+
                         // 将所有按钮的胜利标志改为 true
                         for(int i = 0; i < 4; ++i) {
                             for(int j = 0; j < 4; ++j) {
